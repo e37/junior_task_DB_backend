@@ -21,24 +21,20 @@ public class MainAdapter extends android.widget.BaseAdapter {
     private int green;
     private int position;
     TreeMap<Integer, Integer> treeMap;
-    private Map<Integer, Integer> map;
 
     public MainAdapter(TreeMap<Integer, Integer> treeMap, Context context) {
         this.treeMap = treeMap;
-        this.green = green;
         this.context = context;
     }
 
     @Override
     public int getCount() {
         return treeMap.size();
-//            return items.size();
     }
 
     @Override
     public Object getItem(int position) {
         return treeMap.get(position);
-//        return items.get(position);
     }
 
     @Override

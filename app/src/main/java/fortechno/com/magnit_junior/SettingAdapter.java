@@ -13,6 +13,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -26,6 +28,9 @@ public class SettingAdapter extends android.widget.BaseAdapter {
     private int green;
     private int position;
     private Map<Integer, Integer> map;
+    Cursor cursor;
+    SQLiteDatabase sqLiteDatabase;
+    DBHelper dbHelper ;
 
     public SettingAdapter(TreeMap<Integer, Integer> treeMap, Context context) {
         this.treeMap = treeMap;
@@ -40,24 +45,33 @@ public class SettingAdapter extends android.widget.BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return treeMap.get(position);
+        Object[] keys = treeMap.keySet().toArray();
+        int item =  treeMap.get( keys[position]);
+        return item;
 //        return items.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        int key = 0;
-        if (treeMap != null) {
-            for (Integer keyI : treeMap.keySet()) {
-                if (treeMap.get(keyI).equals(position)) {
-                    key = keyI; //return the first found
-                    return key;
-
-                }
-            }
-        }
+        Object[] keys = treeMap.keySet().toArray();
+        System.out.println( treeMap.keySet().toArray());
+        int key = (int) keys[position];
         return key;
     }
+
+//        if (treeMap != null) {
+//            for (Integer  keyI : treeMap.keySet().toArray()) {
+//                if (treeMap.get(position).equals(position)) {
+////                   key = keyI; //return the first found
+////                    key = keyI+1;
+//                    return keyI;
+//                }
+//                key = keyI;
+//
+//            }
+//
+//        }
+
     //            int key = map.keySet(map.get(position));
 //            return treeMap.keySet(String.valueOf(position));
 
@@ -68,6 +82,11 @@ public class SettingAdapter extends android.widget.BaseAdapter {
         if (listItemView == null) {
             listItemView = LayoutInflater.from(context).inflate(R.layout.list_item, null);
         }
+//       dbHelper = new DBHelper(context);
+//         sqLiteDatabase = dbHelper.getReadableDatabase();
+
+
+
         fillView(listItemView, position);
 
         return listItemView;
@@ -78,34 +97,38 @@ public class SettingAdapter extends android.widget.BaseAdapter {
         TextView tv = (TextView) convertView.findViewById(R.id.textViewOfItem);
         Button button = (Button) convertView.findViewById(R.id.buttonOfItem);
         ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.progressBar);
-        DBHelper dbHelper = new DBHelper(context);
-        SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
+//        DBHelper dbHelper = new DBHelper(context);
+//        SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
+//
+//        String[] projection = {DBHelper._ID, DBHelper.ROW_ID_COLUMN, DBHelper.ROW_GREEN_COLUMN};
+//
+//
+//        Cursor cursor = sqLiteDatabase.query(DBHelper.DB_TABLE, projection,
+//                null, null, null, null, null);
 
-        String[] projection = {DBHelper._ID, DBHelper.ROW_ID_COLUMN, DBHelper.ROW_GREEN_COLUMN};
+//        if ((cursor != null) && (cursor.moveToFirst())) {
+//        String[] projection = {DBHelper._ID, DBHelper.ROW_ID_COLUMN, DBHelper.ROW_GREEN_COLUMN};
+//
+//
+//        Cursor cursor = sqLiteDatabase.query(DBHelper.DB_TABLE, projection,
+//                null, null, null, null, null);
+//        cursor.moveToFirst();
+
+//            int rowId = cursor.getInt(cursor.getColumnIndex(DBHelper.ROW_ID_COLUMN));
+//            int green = cursor.getInt(cursor.getColumnIndex(DBHelper.ROW_GREEN_COLUMN));
+//            treeMap.put(rowId, green);
+//            System.out.println(rowId + " : " + green + "+++++FILL VIEW++++++=");
+//            cursor.close();
+//        }
 
 
-        Cursor cursor = sqLiteDatabase.query(DBHelper.DB_TABLE, projection,
-                null, null, null, null, null);
+//        dbHelper.close();
+//        sqLiteDatabase.close();
 
-        if ((cursor !=null)&&(cursor.moveToFirst())) {
-            cursor.moveToFirst();
-
-
-        int rowId = cursor.getInt(cursor.getColumnIndex(DBHelper.ROW_ID_COLUMN));
-        int green = cursor.getInt(cursor.getColumnIndex(DBHelper.ROW_GREEN_COLUMN));
-        treeMap.put(rowId, green);
-        System.out.println(rowId + " : " + green + "++++++++++++++++++=");
-            cursor.close();
-        }
-
-
-        dbHelper.close();
-        sqLiteDatabase.close();
-
-        tv.setText(String.valueOf(position));
-        button.setText(String.valueOf(treeMap.get(position)));
-//        progressBar.getProgressDrawable().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_IN);
-
+        tv.setText(String.valueOf(getItemId(position)));
+        button.setText(String.valueOf(getItem(position)));
+        progressBar.getProgressDrawable().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_IN);
+progressBar.setProgress((Integer) getItem(position));
 //        if (progressBar.isEnabled()) {
 //            System.out.println("PROGRESS BAR IS NULL+++++++++++++");
 ////            System.out.println(Integer.valueOf(String.valueOf(treeMap.get(position))));

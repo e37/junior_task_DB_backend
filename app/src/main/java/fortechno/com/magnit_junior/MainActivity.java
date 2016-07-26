@@ -16,6 +16,8 @@ import android.widget.*;
 import java.util.Random;
 import java.util.TreeMap;
 
+// TODO: 26.07.2016 разобраться почему при только 2х нажатиих бэк происхожит изх сеттинг активити.
+// TODO: 26.07.2016  3 и самое главное докрутить бэкэнд на питоне
 public class MainActivity extends AppCompatActivity {
     TreeMap<Integer, Integer> treeMap = new TreeMap<>();
     MainAdapter adapter;
@@ -44,19 +46,16 @@ public class MainActivity extends AppCompatActivity {
                 new String[]{DBHelper.ROW_ID_COLUMN, DBHelper.ROW_GREEN_COLUMN},
                 null, null, null, null,null);
         if (cursor.getCount()!=0) {
-            cursor.moveToFirst();
-            while (cursor.isAfterLast()) {
+            while (cursor.moveToNext()) {
                 int rowId = cursor.getInt(cursor.getColumnIndex(DBHelper.ROW_ID_COLUMN));
                 int green = cursor.getInt(cursor.getColumnIndex(DBHelper.ROW_GREEN_COLUMN));
                 treeMap.put(rowId, green);
                 System.out.println(rowId + " : " + green + "++++++++++++++++++=");
-                cursor.moveToNext();
             }
         }
 //        dbHelper.close();
 //        mSqLiteDB.close();
         cursor.close();
-        treeMap.put(1,33);
 
         lvMain = (ListView) findViewById(R.id.listViewMain);
         adapter = new MainAdapter(treeMap, this);
@@ -64,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
             lvMain.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                     Intent intent = new Intent(getApplicationContext(), ItemInfoActivity.class).putExtra("rowId", position).putExtra("green", treeMap.get(position));
                     startActivity(intent);
                 }
@@ -72,9 +70,6 @@ public class MainActivity extends AppCompatActivity {
         }
         if (lvMain != null)
             lvMain.setAdapter(adapter);
-        else
-            System.out.println(" MAIN ADAPTER IS NULL ++++++++++++++");
-
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -91,23 +86,14 @@ public class MainActivity extends AppCompatActivity {
                 null, null, null, null, null);
         int count = cursor.getCount();
         if (count > 0) {
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
+            while (cursor.moveToNext()) {
                 int rowId = cursor.getInt(cursor.getColumnIndex(DBHelper.ROW_ID_COLUMN));
                 int green = cursor.getInt(cursor.getColumnIndex(DBHelper.ROW_GREEN_COLUMN));
                 treeMap.put(rowId, green);
-
-                System.out.println(rowId + " : " + green + "++++++++++++++++++=");
-                cursor.moveToNext();
             }
         }
-        else
-            System.out.println("cursor.count = 0 !!!!!!!! ?????++++++++++++++++++=");
-        treeMap.put(2,11);
         cursor.close();
             adapter.notifyDataSetChanged();
-            System.out.println("вызывается ли onResume ?????++++++++++++++++++=");
-//        mSqLiteDB.close();
 
             super.onRestart();
 
@@ -126,9 +112,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -138,11 +124,11 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
 
-        if (item.getItemId() == R.id.action_settings) {
+//        if (item.getItemId() == R.id.action_settings) {
 //            startActivityForResult(new Intent(this,SettingsActivity.class),1);
             startActivity(new Intent(this, SettingsActivity.class));
-            return true;
-        }
+//            return true;
+//        }
 
 
         return super.onOptionsItemSelected(item);

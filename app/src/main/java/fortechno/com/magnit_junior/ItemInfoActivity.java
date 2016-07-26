@@ -13,15 +13,17 @@ import android.widget.TextView;
 public class ItemInfoActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.list_item);
+        setContentView(R.layout.item_info);
         super.onCreate(savedInstanceState);
-        Intent intent = getIntent();
 
+        Intent intent = getIntent();
+System.out.println(intent.getExtras().getInt("rowId"));
         int row = intent.getExtras().getInt("rowId");
         int green = intent.getExtras().getInt("green");
+
         TextView tv = (TextView) findViewById(R.id.textViewItemInfo);
-        tv.setText(row);
+        tv.setText(String.valueOf(row));
         Button button = (Button) findViewById(R.id.buttonItemInfo);
-        button.setText(green);
+        button.setText(String.valueOf(green));
     }
 }

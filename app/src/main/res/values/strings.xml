@@ -4,4 +4,5 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="activity_settings">activirt_settings</string>
     <string name="SettingsActivity">SettingsActivity</string>
+    <string name="ItemInfoActivity">ItemInfoActivity</string>
 </resources>

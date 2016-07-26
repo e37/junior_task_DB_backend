@@ -22,9 +22,6 @@ public class SettingsActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_setting);
-        treeMap.put(0, 2);
-        treeMap.put(88, 20);
-
         DBHelper mDBHelper = new DBHelper(this);
         SQLiteDatabase mSqLiteDB = mDBHelper.getReadableDatabase();
 
@@ -36,7 +33,7 @@ public class SettingsActivity extends Activity {
             int rowId = cursor.getInt(cursor.getColumnIndex(DBHelper.ROW_ID_COLUMN));
             int green = cursor.getInt(cursor.getColumnIndex(DBHelper.ROW_GREEN_COLUMN));
             treeMap.put(rowId, green);
-            System.out.println(rowId + " : " + green + "++++++++++++++++++=");
+            System.out.println(rowId + " : " + green + "+++++ACTIVITY SETTING+++++=");
         }
         mDBHelper.close();
         mSqLiteDB.close();
@@ -48,47 +45,12 @@ public class SettingsActivity extends Activity {
         ListView lvChangedItems = (ListView) findViewById(R.id.listViewSetting);
 
         lvChangedItems.setAdapter(baseAdapter);
+
         baseAdapter.notifyDataSetChanged();
 
         super.onCreate(savedInstanceState);
 
     }
-
-//    @Override
-//    protected void onResume() {
-//
-//        setContentView(R.layout.activity_setting);
-//        treeMap.put(0, 2);
-//        treeMap.put(88, 20);
-//
-//        DBHelper mDBHelper = new DBHelper(this, "myDB", null, 1);
-//        SQLiteDatabase mSqLiteDB = mDBHelper.getWritableDatabase();
-//
-//        Cursor cursor = mSqLiteDB.query("changesOfRowIdAndGreen",
-//                new String[]{DBHelper.ROW_ID_COLUMN, DBHelper.ROW_GREEN_COLUMN},
-//                null, null, null, null, null);
-//
-//        while (cursor.moveToNext()) {
-//            int rowId = cursor.getInt(cursor.getColumnIndex(DBHelper.ROW_ID_COLUMN));
-//            int green = cursor.getInt(cursor.getColumnIndex(DBHelper.ROW_GREEN_COLUMN));
-//            treeMap.put(rowId, green);
-//            System.out.println(rowId + " : " + green + "++++++++++++++++++=");
-//
-//
-//
-//        }
-//        cursor.close();
-//
-//        baseAdapter = new SettingAdapter(treeMap, this);
-//
-//
-//        ListView lvChangedItems = (ListView) findViewById(R.id.listViewSetting);
-//
-//        lvChangedItems.setAdapter(baseAdapter);
-//        baseAdapter.notifyDataSetChanged();
-//
-//        super.onResume();
-//    }
 
     public void AddItem(View view) {
 
@@ -102,7 +64,7 @@ public class SettingsActivity extends Activity {
 
         ContentValues contentValues = new ContentValues();
         DBHelper dbHelper = new DBHelper(this);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         contentValues.put(DBHelper.ROW_ID_COLUMN, rowId);
         contentValues.put(DBHelper.ROW_GREEN_COLUMN, green);
