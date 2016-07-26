@@ -40,21 +40,23 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = new DBHelper(this);
         mSqLiteDB = dbHelper.getReadableDatabase();
 
-        Cursor cursor = mSqLiteDB.query("changesOfRowIdAndGreen",
+        Cursor cursor = mSqLiteDB.query(DBHelper.DB_TABLE,
                 new String[]{DBHelper.ROW_ID_COLUMN, DBHelper.ROW_GREEN_COLUMN},
-                null, null, null, null, DBHelper.ROW_ID_COLUMN);
-
-        while (cursor.moveToNext()) {
-            int rowId = cursor.getInt(cursor.getColumnIndex(DBHelper.ROW_ID_COLUMN));
-            int green = cursor.getInt(cursor.getColumnIndex(DBHelper.ROW_GREEN_COLUMN));
-            treeMap.put(rowId, green);
-            System.out.println(rowId + " : " + green + "++++++++++++++++++=");
-
-
+                null, null, null, null,null);
+        if (cursor.getCount()!=0) {
+            cursor.moveToFirst();
+            while (cursor.isAfterLast()) {
+                int rowId = cursor.getInt(cursor.getColumnIndex(DBHelper.ROW_ID_COLUMN));
+                int green = cursor.getInt(cursor.getColumnIndex(DBHelper.ROW_GREEN_COLUMN));
+                treeMap.put(rowId, green);
+                System.out.println(rowId + " : " + green + "++++++++++++++++++=");
+                cursor.moveToNext();
+            }
         }
 //        dbHelper.close();
 //        mSqLiteDB.close();
         cursor.close();
+        treeMap.put(1,33);
 
         lvMain = (ListView) findViewById(R.id.listViewMain);
         adapter = new MainAdapter(treeMap, this);
@@ -76,11 +78,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        adapter.notifyDataSetChanged();
 
     }
 
     @Override
-    protected void onResume() {
+    protected void onRestart() {
         mSqLiteDB = dbHelper.getReadableDatabase();
 
         Cursor cursor = mSqLiteDB.query(DBHelper.DB_TABLE,
@@ -93,18 +96,20 @@ public class MainActivity extends AppCompatActivity {
                 int rowId = cursor.getInt(cursor.getColumnIndex(DBHelper.ROW_ID_COLUMN));
                 int green = cursor.getInt(cursor.getColumnIndex(DBHelper.ROW_GREEN_COLUMN));
                 treeMap.put(rowId, green);
+
                 System.out.println(rowId + " : " + green + "++++++++++++++++++=");
                 cursor.moveToNext();
             }
         }
         else
             System.out.println("cursor.count = 0 !!!!!!!! ?????++++++++++++++++++=");
+        treeMap.put(2,11);
         cursor.close();
             adapter.notifyDataSetChanged();
             System.out.println("вызывается ли onResume ?????++++++++++++++++++=");
 //        mSqLiteDB.close();
 
-            super.onResume();
+            super.onRestart();
 
     }
 

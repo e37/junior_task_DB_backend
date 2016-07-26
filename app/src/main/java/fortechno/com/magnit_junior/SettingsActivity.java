@@ -48,7 +48,7 @@ public class SettingsActivity extends Activity {
         ListView lvChangedItems = (ListView) findViewById(R.id.listViewSetting);
 
         lvChangedItems.setAdapter(baseAdapter);
-//        baseAdapter.notifyDataSetChanged();
+        baseAdapter.notifyDataSetChanged();
 
         super.onCreate(savedInstanceState);
 
@@ -108,7 +108,7 @@ public class SettingsActivity extends Activity {
         contentValues.put(DBHelper.ROW_GREEN_COLUMN, green);
         db.setVersion(DBHelper.DB_VERSION++);
         db.insert(DBHelper.DB_TABLE, DBHelper.ROW_ID_COLUMN, contentValues);
-        
+
         dbHelper.close();
         db.close();
     }

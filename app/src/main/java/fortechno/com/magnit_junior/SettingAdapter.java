@@ -29,7 +29,6 @@ public class SettingAdapter extends android.widget.BaseAdapter {
 
     public SettingAdapter(TreeMap<Integer, Integer> treeMap, Context context) {
         this.treeMap = treeMap;
-        this.green = green;
         this.context = context;
     }
 
@@ -90,13 +89,13 @@ public class SettingAdapter extends android.widget.BaseAdapter {
 
         if ((cursor !=null)&&(cursor.moveToFirst())) {
             cursor.moveToFirst();
-            cursor.close();
+
 
         int rowId = cursor.getInt(cursor.getColumnIndex(DBHelper.ROW_ID_COLUMN));
         int green = cursor.getInt(cursor.getColumnIndex(DBHelper.ROW_GREEN_COLUMN));
         treeMap.put(rowId, green);
         System.out.println(rowId + " : " + green + "++++++++++++++++++=");
-        System.out.println(" or NULL ??????++++++++++++++++++=");
+            cursor.close();
         }
 
 
@@ -107,11 +106,11 @@ public class SettingAdapter extends android.widget.BaseAdapter {
         button.setText(String.valueOf(treeMap.get(position)));
 //        progressBar.getProgressDrawable().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_IN);
 
-        if (progressBar.isEnabled()) {
-            System.out.println("PROGRESS BAR IS NULL+++++++++++++");
-//            System.out.println(Integer.valueOf(String.valueOf(treeMap.get(position))));
-        } else
-            progressBar.setProgress(Integer.valueOf(String.valueOf(treeMap.get(position))));
+//        if (progressBar.isEnabled()) {
+//            System.out.println("PROGRESS BAR IS NULL+++++++++++++");
+////            System.out.println(Integer.valueOf(String.valueOf(treeMap.get(position))));
+//        } else
+//            progressBar.setProgress(Integer.valueOf(String.valueOf(treeMap.get(position))));
 
     }
 
